@@ -18,3 +18,22 @@ export async function fetchProperties() {
     return Promise.resolve([]);
   }
 }
+
+export async function fetchProperty(id) {
+  try {
+    if (!API_DOMAIN) {
+      return Promise.resolve(null);
+    }
+
+    const propertyResponse = await fetch(`${API_DOMAIN}/properties/${id}`);
+
+    if (!propertyResponse.ok) {
+      throw new Error('Failed to fetch data');
+    }
+
+    return propertyResponse.json();
+  } catch (err) {
+    console.log(err);
+    return Promise.resolve(null);
+  }
+}
