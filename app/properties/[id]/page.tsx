@@ -8,6 +8,8 @@ import { FaArrowLeft, FaBookmark, FaShare } from 'react-icons/fa';
 
 import PropertyDetails from '@/components/PropertyDetails';
 import PropertyHeaderImage from '@/components/PropertyHeaderImage';
+import PropertyImages from '@/components/PropertyImages';
+import propertyImages from '@/components/PropertyImages';
 import Spinner from '@/components/Spinner';
 
 const PropertyPage = () => {
@@ -147,6 +149,7 @@ const PropertyPage = () => {
               </div>
             </div>
           </section>
+          <PropertyImages images={property.images} />
         </>
       )}
     </>
