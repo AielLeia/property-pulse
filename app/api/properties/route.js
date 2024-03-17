@@ -1,5 +1,6 @@
 import connectDb from '@/config/db.config';
 import Property from '@/models/Property';
+import { getSessionUser } from '@/utils/getSessionUser';
 
 /**
  * Route: GET /api/properties
@@ -23,6 +24,15 @@ export const GET = async () => {
 
 export const POST = async (request) => {
   try {
+    await connectDb();
+    const userSession = await getSessionUser();
+
+    if (!userSession || !userSession.userId) {
+      return new Response('User ID is required', { status: 401 });
+    }
+
+    const authUserId = userSession.userId;
+
     const formData = await request.formData();
 
     const amenities = formData.getAll('amenities');
@@ -54,14 +64,20 @@ export const POST = async (request) => {
         email: formData.get('seller_info.email'),
         phone: formData.get('seller_info.phone'),
       },
-      images,
+      owner: authUserId,
+      // images,
     };
 
-    console.log(propertyData);
+    const newProperty = new Property(propertyData);
+    await newProperty.save();
 
-    return new Response(JSON.stringify({ message: 'Success' }), {
-      status: 201,
-    });
+    return Response.redirect(
+      `${process.env.NEXTAUTH_URL}/properties/${newProperty._id}`
+    );
+
+    // return new Response(JSON.stringify({ message: 'Success' }), {
+    //   status: 201,
+    // });
   } catch (err) {
     return new Response(JSON.stringify({ message: err }), { status: 500 });
   }
