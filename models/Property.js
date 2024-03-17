@@ -1,4 +1,6 @@
-import { model, models, Schema } from 'mongoose';
+import mongoose from 'mongoose';
+
+const { Schema, models, model } = mongoose;
 
 const PropertySchema = new Schema(
   {

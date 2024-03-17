@@ -20,4 +20,10 @@ const connectDb = async () => {
   }
 };
 
+export const disconnectDb = async () => {
+  if (isConnected) {
+    await mongoose.disconnect();
+  }
+};
+
 export default connectDb;
