@@ -30,9 +30,61 @@ const PropertyAddForm = () => {
     images: [],
   });
 
-  const handleChange = () => {};
-  const handleAmenitiesChange = () => {};
-  const handleImageChange = () => {};
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    if (name.includes('.')) {
+      return handleNestedFields(name, value);
+    }
+
+    setFields((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleAmenitiesChange = (event) => {
+    const { value, checked } = event.target;
+
+    const updatedAmenities = [...fields.amenities];
+
+    updateCheckedAmenities(checked, updatedAmenities, value);
+
+    setFields((prevState) => ({ ...prevState, amenities: updatedAmenities }));
+  };
+
+  const handleImageChange = (event) => {
+    const { files } = event.target;
+
+    const updatedImages = [...fields.images];
+
+    for (const file of files) {
+      updatedImages.push(file);
+    }
+
+    setFields((prevState) => ({ ...prevState, images: updatedImages }));
+  };
+
+  const handleNestedFields = (name, value) => {
+    const [outerKey, innerKey] = name.split('.');
+    setFields((prevState) => ({
+      ...prevState,
+      [outerKey]: {
+        ...prevState[outerKey],
+        [innerKey]: value,
+      },
+    }));
+  };
+
+  const updateCheckedAmenities = (checked, updatedAmenities, value) => {
+    if (checked) {
+      updatedAmenities.push(value);
+      return;
+    }
+
+    const index = updatedAmenities.indexOf(value);
+
+    if (index !== -1) {
+      updatedAmenities.splice(index, 1);
+    }
+  };
 
   return (
     <form>
