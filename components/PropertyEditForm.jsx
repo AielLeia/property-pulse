@@ -3,6 +3,7 @@
 import { fetchProperty } from '@/utils/requests';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const PropertyEditForm = () => {
   const { id } = useParams();
@@ -105,7 +106,28 @@ const PropertyEditForm = () => {
     }
   };
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData(e.target);
+      const updatedResponse = await fetch(`/api/properties/${id}`, {
+        method: 'PUT',
+        body: formData,
+      });
+
+      if (updatedResponse.ok) {
+        router.push(`/properties/${id}`);
+      } else if ([401, 403].includes(updatedResponse.status)) {
+        toast.error('Permission denied');
+      } else {
+        toast.error('Something went wrong');
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error('Something went wrong');
+    }
+  };
 
   return (
     !loading && (
