@@ -17,9 +17,9 @@ const MainLayout = ({ children }) => {
   return (
     <AuthProvider>
       <html lang="en">
-        <body>
+        <body className="h-screen">
           <Navbar />
-          <main>{children}</main>
+          <main className="h-screen">{children}</main>
           <Footer />
         </body>
       </html>
