@@ -27,7 +27,7 @@ const propertySeed = async () => {
   const users = await User.find({});
   const usersId = users.map(userId => userId._id.toString())
 
-  let maxProperties = randNumber({ min: 100, max: 1000 });
+  let maxProperties = randNumber({ min: 10, max: 100 });
 
 	while (maxProperties > 0) {
 		seed();

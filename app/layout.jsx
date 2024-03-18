@@ -19,7 +19,7 @@ const MainLayout = ({ children }) => {
       <html lang="en">
         <body className="h-screen">
           <Navbar />
-          <main className="h-screen">{children}</main>
+          <main>{children}</main>
           <Footer />
         </body>
       </html>
