@@ -67,7 +67,12 @@ const propertySeed = async () => {
 		];
 		const typeIndex = Math.floor(Math.random() * types.length)
 
-		const location = randAddress()
+		const location = {
+			street: '17 Boulevard d\'anjou',
+			city: 'France',
+			state: 'Rennes',
+			zipCode: '35000'
+		}
 
 		const propertyData = {
 			type: types[typeIndex],
