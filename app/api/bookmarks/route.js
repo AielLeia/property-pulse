@@ -1,8 +1,34 @@
 import connectDb from '@/config/db.config';
+import Property from '@/models/Property';
 import User from '@/models/User';
 import { getSessionUser } from '@/utils/getSessionUser';
 
 export const dynamic = 'force-dynamic';
+
+export const GET = async () => {
+  try {
+    await connectDb();
+
+    const userSession = await getSessionUser();
+    if (!userSession || !userSession.userId) {
+      return new Response('User id is required', { status: 401 });
+    }
+
+    const { userId } = userSession;
+    const user = await User.findOne({ _id: userId });
+
+    const bookmarks = await Property.find({ _id: { $in: user.bookmarks } });
+
+    return new Response(JSON.stringify({ properties: bookmarks }), {
+      status: 200,
+    });
+  } catch (err) {
+    console.error(err);
+    return new Response(JSON.stringify('Something went wrong'), {
+      status: 500,
+    });
+  }
+};
 
 export const POST = async (request) => {
   try {
