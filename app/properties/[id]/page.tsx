@@ -4,14 +4,13 @@ import { fetchProperty } from '@/utils/requests';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { FaArrowLeft, FaBookmark, FaShare } from 'react-icons/fa';
+import { FaArrowLeft } from 'react-icons/fa';
 
 import BookmarkButton from '@/components/BookmarkButton';
 import PropertyContactForm from '@/components/PropertyContactForm';
 import PropertyDetails from '@/components/PropertyDetails';
 import PropertyHeaderImage from '@/components/PropertyHeaderImage';
 import PropertyImages from '@/components/PropertyImages';
-import propertyImages from '@/components/PropertyImages';
 import ShareButtons from '@/components/ShareButtons';
 import Spinner from '@/components/Spinner';
 
@@ -71,7 +70,7 @@ const PropertyPage = () => {
                   <BookmarkButton property={property} />
                   <ShareButtons property={property} />
 
-                  <PropertyContactForm />
+                  <PropertyContactForm property={property} />
                 </aside>
               </div>
             </div>
