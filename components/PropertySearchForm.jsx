@@ -3,11 +3,14 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-const PropertySearchForm = () => {
+const PropertySearchForm = ({
+  locationSearch = '',
+  propertyTypeSearch = 'All',
+}) => {
   const router = useRouter();
 
-  const [location, setLocation] = useState('');
-  const [propertyType, setPropertyType] = useState('All');
+  const [location, setLocation] = useState(locationSearch);
+  const [propertyType, setPropertyType] = useState(propertyTypeSearch);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

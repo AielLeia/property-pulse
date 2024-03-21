@@ -1,6 +1,7 @@
 import { fetchProperties } from '@/utils/requests';
 
 import PropertyCard from '@/components/PropertyCard';
+import PropertySearchForm from '@/components/PropertySearchForm';
 
 const PropertiesPage = async () => {
   const { properties } = await fetchProperties();
@@ -9,7 +10,12 @@ const PropertiesPage = async () => {
       new Date(p2.createdAt).getTime() - new Date(p1.createdAt).getTime()
   );
   return (
-    <div>
+    <>
+      <section className="bg-blue-500 py-4">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col items-start sm:px-6 lg:px-8">
+          <PropertySearchForm />
+        </div>
+      </section>
       <section className="px-4 py-6">
         <div className="container-xl lg:container m-auto px-4 py-6">
           {properties.length === 0 ? (
@@ -23,7 +29,7 @@ const PropertiesPage = async () => {
           )}
         </div>
       </section>
-    </div>
+    </>
   );
 };
 
