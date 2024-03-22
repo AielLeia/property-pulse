@@ -17,8 +17,8 @@ export const GET = async () => {
     const { userId } = userSession;
 
     const messages = await Message.find({ recipient: userId })
-      .populate('sender', 'name')
-      .populate('property', 'title');
+      .populate('sender', 'username')
+      .populate('property', 'name');
 
     return new Response(JSON.stringify({ messages }), { status: 200 });
   } catch (err) {
@@ -57,7 +57,7 @@ export const POST = async (request) => {
       recipient,
       property,
       body: message,
-      phoneNumber,
+      phone: phoneNumber,
       email,
       name,
     });
