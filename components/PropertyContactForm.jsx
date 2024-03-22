@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { FaPaperPlane } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const PropertyContactForm = ({ property }) => {
   const [name, setName] = useState('');
@@ -22,8 +23,32 @@ const PropertyContactForm = ({ property }) => {
       property: property._id,
     };
 
-    console.log(data);
-    setWasSubmitted(true);
+    try {
+      const response = await fetch(`/api/messages`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const responseData = await response.json();
+
+      if (response.status === 200) {
+        toast.success('Message sent successfully');
+        setWasSubmitted(true);
+      } else if ([400, 401].includes(response.status)) {
+        toast.error(responseData.message);
+      } else {
+        toast.error('Error while sending message');
+      }
+
+      setName('');
+      setEmail('');
+      setPhoneNumber('');
+      setMessage('');
+    } catch (err) {
+      console.error(err.toString());
+      toast.error('Error while sending message');
+    }
   };
 
   return (
