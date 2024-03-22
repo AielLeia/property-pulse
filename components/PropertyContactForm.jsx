@@ -1,10 +1,13 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { FaPaperPlane } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
 const PropertyContactForm = ({ property }) => {
+  const { data: session } = useSession();
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -54,7 +57,10 @@ const PropertyContactForm = ({ property }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <h3 className="text-xl font-bold mb-6">Contact Property Manager</h3>
-      {wasSubmitted ? (
+
+      {!session ? (
+        <p>You must be logged in</p>
+      ) : wasSubmitted ? (
         <p className="text-green-500 mb-4">Your messages sent successfully</p>
       ) : (
         <form onSubmit={handleSubmit}>
