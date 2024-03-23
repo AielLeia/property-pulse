@@ -8,13 +8,19 @@ import { getSessionUser } from '@/utils/getSessionUser';
  *
  * @return {Promise<{properties: Property}>}
  */
-export const GET = async () => {
+export const GET = async (request) => {
   try {
     await connectDb();
 
-    const properties = await Property.find({});
+    const page = request.nextUrl.searchParams.get('page') || 1;
+    const pageSize = request.nextUrl.searchParams.get('pageSize') || 3;
 
-    return new Response(JSON.stringify({ properties }), {
+    const skip = (page - 1) * pageSize;
+
+    const totalProperties = await Property.countDocuments({});
+    const properties = await Property.find({}).skip(skip).limit(pageSize);
+
+    return new Response(JSON.stringify({ properties, totalProperties }), {
       status: 200,
     });
   } catch (err) {
