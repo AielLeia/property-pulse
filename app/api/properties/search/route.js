@@ -2,10 +2,11 @@ import connectDb from '@/config/db.config';
 import Property from '@/models/Property';
 
 export const GET = async (request) => {
+  const { searchParams } = new URL(request.url);
+
   try {
     await connectDb();
 
-    const { searchParams } = new URL(request.url);
     const location = searchParams.get('location');
     const propertyType = searchParams.get('propertyType');
 

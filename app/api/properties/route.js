@@ -3,17 +3,12 @@ import connectDb from '@/config/db.config';
 import Property from '@/models/Property';
 import { getSessionUser } from '@/utils/getSessionUser';
 
-/**
- * Route: GET /api/properties
- *
- * @return {Promise<{properties: Property}>}
- */
 export const GET = async (request) => {
+  const page = request.nextUrl.searchParams.get('page') || 1;
+  const pageSize = request.nextUrl.searchParams.get('pageSize') || 3;
+
   try {
     await connectDb();
-
-    const page = request.nextUrl.searchParams.get('page') || 1;
-    const pageSize = request.nextUrl.searchParams.get('pageSize') || 3;
 
     const skip = (page - 1) * pageSize;
 
@@ -90,9 +85,7 @@ export const POST = async (request) => {
 
       imagesUploadPromises.push(result.secure_url);
 
-      const uploadedImages = await Promise.all(imagesUploadPromises);
-
-      propertyData.images = uploadedImages;
+      propertyData.images = await Promise.all(imagesUploadPromises);
     }
 
     const newProperty = new Property(propertyData);
@@ -101,10 +94,6 @@ export const POST = async (request) => {
     return Response.redirect(
       `${process.env.NEXTAUTH_URL}/properties/${newProperty._id}`
     );
-
-    // return new Response(JSON.stringify({ message: 'Success' }), {
-    //   status: 201,
-    // });
   } catch (err) {
     return new Response(JSON.stringify({ message: err.message }), {
       status: 500,

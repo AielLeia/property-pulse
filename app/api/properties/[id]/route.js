@@ -1,15 +1,7 @@
-import cloudinary from '@/config/cloudinary.config';
 import connectDb from '@/config/db.config';
 import Property from '@/models/Property';
 import { getSessionUser } from '@/utils/getSessionUser';
 
-/**
- * Route: GET /api/properties/:id
- *
- * @param {import('next').NextApiRequest} request
- * @param {{params: { id: string }}}
- * @return {Promise<{properties: Property}>}
- */
 export const GET = async (request, { params }) => {
   try {
     await connectDb();
@@ -31,13 +23,6 @@ export const GET = async (request, { params }) => {
   }
 };
 
-/**
- * Route: DELETE /api/properties/:id
- *
- * @param {import('next').NextApiRequest} request
- * @param {{params: { id: string }}}
- * @return {Promise<{properties: Property}>}
- */
 export const DELETE = async (request, { params }) => {
   try {
     const propertyId = params.id;
@@ -74,12 +59,6 @@ export const DELETE = async (request, { params }) => {
   }
 };
 
-/**
- * Route: DELETE /api/properties/:id
- *
- * @param {import('next').NextApiRequest} request
- * @param {{params: { id: string }}}
- */
 export const PUT = async (request, { params: { id } }) => {
   try {
     await connectDb();

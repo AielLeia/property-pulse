@@ -1,13 +1,6 @@
 import connectDb from '@/config/db.config';
 import Property from '@/models/Property';
 
-/**
- * Route: GET /api/properties/user/:userId
- *
- * @param {import('next').NextApiRequest} request
- * @param {{params: { userId: string }}}
- * @return {Promise<{properties: Property[]}>}
- */
 export const GET = async (request, { params }) => {
   try {
     await connectDb();
