@@ -16,11 +16,24 @@ export const GET = async () => {
 
     const { userId } = userSession;
 
-    const messages = await Message.find({ recipient: userId })
+    const readMessages = await Message.find({ recipient: userId, read: true })
+      .sort({ createdAt: -1 })
       .populate('sender', 'username')
       .populate('property', 'name');
 
-    return new Response(JSON.stringify({ messages }), { status: 200 });
+    const unreadMessages = await Message.find({
+      recipient: userId,
+      read: false,
+    })
+      .sort({ createdAt: -1 })
+      .populate('sender', 'username')
+      .populate('property', 'name');
+
+    const messages = [...unreadMessages, ...readMessages];
+
+    return new Response(JSON.stringify({ messages }), {
+      status: 200,
+    });
   } catch (err) {
     return new Response(JSON.stringify({ message: 'Something went wrong' }), {
       status: 500,
