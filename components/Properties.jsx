@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
+import Pagination from '@/components/Pagination';
 import PropertyCard from '@/components/PropertyCard';
 import Spinner from '@/components/Spinner';
 
@@ -9,7 +10,7 @@ const Properties = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(9);
+  const [pageSize] = useState(6);
   const [totalProperties, setTotalProperties] = useState(0);
 
   useEffect(() => {
@@ -34,7 +35,11 @@ const Properties = () => {
     };
 
     getProperties();
-  }, []);
+  }, [page]);
+
+  const handlePageChange = async (newPage) => {
+    setPage(newPage);
+  };
 
   return loading ? (
     <Spinner loading={loading} />
@@ -51,6 +56,12 @@ const Properties = () => {
           </div>
         )}
       </div>
+      <Pagination
+        page={page}
+        pageSize={pageSize}
+        totalItem={totalProperties}
+        onPageChange={handlePageChange}
+      />
     </section>
   );
 };
