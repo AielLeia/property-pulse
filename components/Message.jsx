@@ -1,7 +1,9 @@
+import { useGlobalContext } from '@/context/GlobalContext';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 const Message = ({ message }) => {
+  const { setUnreadCount } = useGlobalContext();
   const [isRead, setIsRead] = useState(message.read);
   const [isDeleted, setIsDeleted] = useState(false);
 
@@ -17,8 +19,13 @@ const Message = ({ message }) => {
         } = await response.json();
         setIsRead(read);
 
-        if (read) toast.success('Message read successfully');
-        else toast.success('Message mark as new successfully');
+        if (read) {
+          toast.success('Message read successfully');
+          setUnreadCount((prevState) => prevState - 1);
+        } else {
+          toast.success('Message mark as new successfully');
+          setUnreadCount((prevState) => prevState + 1);
+        }
       }
     } catch (err) {
       toast.error(err);
@@ -34,6 +41,7 @@ const Message = ({ message }) => {
       if (response.status === 201) {
         setIsDeleted(true);
         toast.success('Message deleted');
+        setUnreadCount((prevState) => prevState - 1);
       }
     } catch (err) {
       toast.error(err);

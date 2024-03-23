@@ -1,4 +1,5 @@
 import '@/assets/styles/globals.css';
+import { GlobalContextProvider } from '@/context/GlobalContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -17,16 +18,18 @@ export const metadata = {
 
 const MainLayout = ({ children }) => {
   return (
-    <AuthProvider>
-      <html lang="en">
-        <body className="h-screen">
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-          <ToastContainer />
-        </body>
-      </html>
-    </AuthProvider>
+    <GlobalContextProvider>
+      <AuthProvider>
+        <html lang="en">
+          <body className="h-screen">
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+            <ToastContainer />
+          </body>
+        </html>
+      </AuthProvider>
+    </GlobalContextProvider>
   );
 };
 
