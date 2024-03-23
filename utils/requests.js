@@ -1,14 +1,17 @@
 const API_DOMAIN = process.env.NEXT_PUBLIC_API_DOMAIN || null;
 
-export async function fetchProperties() {
+export async function fetchProperties({ showFeature = false } = {}) {
   try {
     if (!API_DOMAIN) {
       return Promise.resolve([]);
     }
 
-    const propertiesResponse = await fetch(`${API_DOMAIN}/properties`, {
-      cache: 'no-store',
-    });
+    const propertiesResponse = await fetch(
+      `${API_DOMAIN}/properties${showFeature ? '/featured' : ''}`,
+      {
+        cache: 'no-store',
+      }
+    );
 
     if (!propertiesResponse.ok) {
       throw new Error('Failed to fetch data');
